@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +29,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ArticleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
-                    Column(modifier = Modifier) { // le column faut le mettre a linterieu du scaffold
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> // cest ce padding la qui donne lespace de la top bar
+                    Column(modifier = Modifier.padding(innerPadding)) { // le column faut le mettre a linterieur du scaffold, prend en param le innerPadding
+                        ArticleImage(modifier = Modifier) // pas bs de re declarer le type
                         Information(
                             title = stringResource(R.string.title),
                             subtitleOne = stringResource(R.string.subtitleOne),
@@ -35,10 +39,21 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-
             }
         }
     }
+}
+
+@Composable
+fun ArticleImage(modifier: Modifier = Modifier) {
+    val image = painterResource(R.drawable.background)
+
+    Image(
+        painter = image,
+        contentDescription = null,
+        contentScale = ContentScale.Fit, // prend la taille de limage
+    )
+
 }
 
 @Composable
